@@ -54,27 +54,25 @@
 import { uid } from 'quasar';
 import useColorise from 'src/use/useColorise';
 import useCurrencify from 'src/use/useCurrencify';
-import { ref, computed, reactive } from 'vue';
+import { ref, computed, reactive, onMounted } from 'vue';
+import { useQuasar } from 'quasar'
+
+const $q = useQuasar()
+
+const entries = ref([])
+
+onMounted(() => {
+
+  const stored_data = $q.localStorage.getItem("data")
+  if (stored_data) {
+    entries.value = stored_data
+  }
+})
+
 
 const nameRef = ref(null)
 
-const entries = ref([
-  {
-    id: 'id1',
-    name: 'salary',
-    amount: 2000
-  },
-  {
-    id: 'id2',
-    name: 'tuition',
-    amount: -300
-  },
-  {
-    id: 'id3',
-    name: 'spends from grandma',
-    amount: 1000
-  }
-])
+
 
 const balance = computed(() => {
   return entries.value.reduce((acc, { amount }) => {
@@ -98,12 +96,22 @@ const addEntry = () => {
   addEntryForm.name = ""
   addEntryForm.amount = null
   nameRef.value.focus()
+  try {
+    $q.localStorage.set("data", entries.value)
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 const onEntrySlideRight = (_, entryId) => {
   // remove entry
   const index = entries.value.findIndex(entry => entry.id === entryId)
   entries.value.splice(index, 1)
+  try {
+    $q.localStorage.set("data", entries.value)
+  } catch (error) {
+    console.log(error);
+  }
 
 }
 </script>
