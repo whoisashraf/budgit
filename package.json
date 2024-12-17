@@ -2,7 +2,7 @@
   "name": "budgit",
   "version": "0.0.1",
   "description": "A budgeting app",
-  "productName": "budgit_app",
+  "productName": "budgit",
   "author": "whoisashraf <adebayoashraf25a@gmail.com>",
   "type": "module",
   "private": true,
